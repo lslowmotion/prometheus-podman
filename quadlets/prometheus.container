@@ -1,0 +1,18 @@
+[Unit]
+Description=Prometheus
+After=network-online.target
+Requires=podman.socket
+
+[Service]
+Restart=always
+TimeoutStartSec=60
+
+[Container]
+Image=docker.io/prom/prometheus:latest
+Network=host
+Volume=/etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:z
+Volume=prometheus-data:/prometheus
+Exec=--config.file=/etc/prometheus/prometheus.yml --storage.tsdb.path=/prometheus --web.listen-address=:9091 --web.enable-lifecycle
+
+[Install]
+WantedBy=multi-user.target

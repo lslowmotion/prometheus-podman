@@ -1,0 +1,18 @@
+[Unit]
+Description=Nvidia GPU exporter
+After=network-online.target
+Requires=podman.socket
+
+[Service]
+Restart=always
+TimeoutStartSec=60
+
+[Container]
+Image=docker.io/utkuozdemir/nvidia_gpu_exporter:1.4.1
+Network=host
+PodmanArgs=--ulimit=host
+PodmanArgs=--security-opt=label=disable
+AddDevice=nvidia.com/gpu=all
+
+[Install]
+WantedBy=multi-user.target

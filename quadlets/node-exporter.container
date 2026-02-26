@@ -1,0 +1,17 @@
+[Unit]
+Description=Nvidia GPU exporter
+After=network-online.target
+Requires=podman.socket
+
+[Service]
+Restart=always
+TimeoutStartSec=60
+
+[Container]
+Image=quay.io/prometheus/node-exporter:latest
+Network=host
+Volume=/:/host:ro,rslave
+Exec=--path.rootfs=/host
+
+[Install]
+WantedBy=multi-user.target
